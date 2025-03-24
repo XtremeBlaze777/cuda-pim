@@ -2,7 +2,13 @@
 
 int main(){
     //CPU SIDED CODE
-    tensorAdd<<<inputs, outputs>>>
+    // cudaMalloc(A);
+    // cudaMalloc(B);
+    // cudaMalloc(c);
+
+    halideOutput(c)
+
+    tensorAdd<<<1, 1>>>(output, inputs);
 }
 /*
 function arguments (output data, input data...) 
