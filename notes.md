@@ -1,1 +1,0 @@
-- most Halide "primitives" pass the symbol name as a string (`Var x{"x"}`) so that there is debug info (c++ doesn't have `__name__`). This can be a feature of the compiler/transpiler rather than the client code having to type it.
