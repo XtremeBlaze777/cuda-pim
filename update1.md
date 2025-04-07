@@ -1,3 +1,8 @@
+- Links
+    - [Halide Docs](https://halide-lang.org/docs/tutorial_2lesson_15_generators_8cpp-example.html)
+    - [Aquabolt paper](https://ieeexplore.ieee.org/stamp/stamp.jsp?arnumber=9499894)
+    - [PIMeval paper](https://www.cs.virginia.edu/venkat/papers/iiswc2024.pdf)
+
 - because the recommended install for halide is `pip install halide`, the .so gets put in .local/site-packages, thus we need to manually tell the compiler where it's located (adjust python version accordingly):
     ```c
     export HALIDE_FLAGS="-g -I $HOME/.local/lib/python3.11/site-packages/halide/include/ -L $HOME/.local/lib/python3.11/site-packages/halide/lib64/ -lHalide -lpthread -ldl -std=c++17"
@@ -35,8 +40,10 @@
     so there are a couple of approaches we could try:
     - C++ has variadic functions which are similar to python's `*args` and `**kwargs`: `printf(char* str, ...)`
     - Another option is to just use an `argc, argv` approach where we just pass an array of inputs and an array of outputs
-    - We could also just offload this to the compiler which could be tricky but it can recgonize what is on the left and right-hand side of the expression.
+    - We could also just offload this to the compiler which could be tricky but it can recgonize what is on the left and right-hand side of the expression
 
 - Understanding the LLVM IR representation of TensorAdd (`llvmTensorAdd.ll`):
     - we are passing in %arg and %arg.1 which must be the input buffers
-    - there is a difference between pimAlloc and alloca, it seems like pimAlloc specifically designates it as a buffer for the compute units on the DIMM, while alloca will just get it to RAM.
+    - there is a difference between pimAlloc and alloca, it seems like pimAlloc specifically designates it as a buffer for the compute units on the DIMM, while alloca will just get it to RAM
+    - we are assigning the function `@pimAlloc` (with a tail call optimization) to a register called `%pimAlloc`?
+    
