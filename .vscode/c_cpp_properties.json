@@ -4,15 +4,17 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "~/.local/lib/python*/site-packages/halide/include"
+                "~/.local/lib/python*/site-packages/halide/include",
+                "~/.local/lib/python*/site-packages/halide/lib64"
             ],
             "defines": [],
-            "compilerPath": "/usr/bin/clang-14",
+            "compilerPath": "/usr/bin/clang++",
             "cStandard": "c17",
             "cppStandard": "c++14",
             "intelliSenseMode": "linux-clang-x64",
             "compilerArgs": [
-                "-L ~/.local/lib/python*/site-packages/halide/include"
+                "-L ~/.local/lib/python*/site-packages/halide/include",
+                "-L ~/.local/lib/python*/site-packages/halide/lib64"
             ]
         }
     ],

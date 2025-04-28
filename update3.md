@@ -1,0 +1,5 @@
+- problems with contiguous memory:
+    - pim units can only operate on data in their bank so there would be no parallelism
+    - so the "grid structure" (stuff in <<<>>>) could be deciding whether / how much to move data around with the HBM stack to align data with multiple pim units vs. just having one unit execute sequentially
+    - would need to empirically decide which option has lower latency
+- programatically request initial allocation at multiple pim units (so across banks)? say i maybe allocate a 2D matrix using a "linked list" so that less data has to be moved around during PIM compute?
