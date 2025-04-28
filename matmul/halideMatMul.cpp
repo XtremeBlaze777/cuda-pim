@@ -16,26 +16,35 @@ public:
     // The function
     void generate() {
         Var i("i"), j("j");
-        RDom r(0, K);
+
+        Expr io = i / TILE_SIZE;
+        Expr ii = i % TILE_SIZE;
+        Expr jo = j / TILE_SIZE;
+        Expr jj = j % TILE_SIZE;
+
+        RDom r(0, K, "r");
 		
-        C(i, j) = 0.0f;
-        C(i, j) += A(i, r) * B(r, j);
+        Expr expr1 = A(io * TILE_SIZE + ii, r);
+        Expr expr2 = B(r, jo * TILE_SIZE + jj);
+        Expr expr3 = sum(expr1 * expr2);
+
+        C(i, j) = expr3;
     }
 	
 	void schedule() {
-		Var i("i"), j("j"), io("io"), ii("ii"), jo("jo"), jj("jj");
+		Var i("i"), j("j");
 
 		// Schedule pure definition (C(i, j) = 0)
 		C.bound(i, 0, A.dim(0).extent()) // Optional: Bound for safety
 			.bound(j, 0, B.dim(1).extent());
 
 		// Schedule update (C(i, j) += ...)
-		C.update()
-			.tile(i, j, io, jo, ii, jj, TILE_SIZE, TILE_SIZE)
+		// C.update()
+			// .tile(i, j, io, jo, ii, jj, TILE_SIZE, TILE_SIZE)
 			// .parallel(io)
 			// .vectorize(ii, 8)
 			// .unroll(jj)
-            ;
+            // ;
 	}
 	
 };
