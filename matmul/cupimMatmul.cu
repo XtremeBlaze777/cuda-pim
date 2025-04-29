@@ -20,16 +20,11 @@ __global__ void matmulTiled(chunk* plan) {
 		for (int j = 0; j < plan->cols.size(); j++) {
 			plan->output[i][j] = 0;
 
-			if (pimPrimitivesAvailable()) {
-				int* output = &(plan->output[i][j]);
-				pimMAC(output, plan->rows[i], plan->cols[j]);
-				return;
-			}
-
 			pimBuffer_t<int> cur_row = plan->rows[i];
 			pimBuffer_t<int> cur_col = plan->cols[j];
 			if (cur_row.size() != cur_col.size()) {
-				pimError(PIM_LOGIC_ERROR);
+				fprintf(stderr, "Error: row and column sizes do not match\n");
+				return;
 			}
 			for (int k = 0; k < cur_row.size(); k++) {
 				plan->output[i][j] += cur_row[k] * cur_col[k];
@@ -66,9 +61,10 @@ int main() {
 	int size_across_all_cores = input_size_across_all_cores + output_size_across_all_cores;
 
 	// host side plan definition
-	chunk* plan_host = pimPlanAllocHost(size_across_all_cores);  // allocates size_across/sizeof(chunk) chunks
+	chunk* plan_host = pimPlanAllocHost(size_across_all_cores, chunk_def=chunk);  // allocates size_across/sizeof(chunk) chunks
 	plan_host->rows = Row(A, i);
 	plan_host->cols = Col(B, j);
+	// plan_host->setRows(Row(A, i));
 	
     // alloc space for PIM
 	chunk* plan_device;

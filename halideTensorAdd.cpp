@@ -1,5 +1,4 @@
 #include "Halide.h"
-
 using namespace Halide;
 
 class TensorAdd : public Generator<TensorAdd> {
